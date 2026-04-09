@@ -10,7 +10,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
                 body {
-                background-color: #100f0f;
+                background-color: #130d0c;
                 }
                 * {
                 padding: 0;
@@ -33,11 +33,10 @@
                 }
 
                 .container .nav {
-                background: none;
-                    display: flex;
-                    margin-top: 30px;
-                    align-items: center;
-                    justify-content: space-between;
+                display: flex;
+                margin-top: 30px;
+                align-items: center;
+                justify-content: space-between;
                 }
                 .container .nav i {
                 background: none;
@@ -159,6 +158,42 @@
                 color: #917b76;
                 margin-top: 20px;
               }
+              .heart {
+                position: absolute;
+                top:50%;
+                left:50%;
+                transform: translate(-50%,-50%);
+                width: 414px;
+                height: 770px;
+                border-radius: 10px;
+                background-image: url('https://www.onlygfx.com/wp-content/uploads/2019/06/6-heart-pattern-2.png');
+                background-size: contain;
+                z-index: -1;
+                opacity: 20%;
+                overflow: hidden;
+                background-repeat: repeat-y;
+                transition: ease-in-out;
+
+                animation: roll 3600s infinite linear
+              }
+                @keyframes roll { 
+                  100% {
+                    background-position-y: 200000px;
+                  }
+                }
+
+              .gradient {
+                background-image: linear-gradient(179deg,rgba(0, 0, 0, 1) 0%, rgba(156, 25, 0, 0) 100%);
+                position: absolute;
+                top:50%;
+                left:50%;
+                transform: translate(-50%,-50%);
+                width: 414px;
+                height: 770px;
+                z-index: -1;
+                border-radius: 12px;
+              }
+
                 
     </style>
 
@@ -171,7 +206,6 @@
   <div class="pedido"></div>
   <div class="respostas"></div>
   <div class="player">
-    <!-- From Uiverse.io by ParasSalunke --> 
 <div class="music-card">
 
   <div class="card-header">
@@ -235,12 +269,11 @@
     <div class="progress-container"><div class="progress-bar"><div class="bar"></div></div></div>
     <div class="progress-time"><span style="font-weight: 700; color: aliceblue;">SIM</span><span>NÃO</span></div>
  <iframe data-testid="embed-iframe" style="border-radius:12px; inset: 0; margin:auto; position: fixed; margin-top: 650px;" src="https://open.spotify.com/embed/track/68eBEUfmUZ3GKC4w1xkOWP?utm_source=generator" width="390" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-  </div>
-    </div>
-    </div>
-  </div>
+
  
 </div>
+<div class="heart"></div>
+<div class="gradient"></div>
 
 </body>
 </html>
