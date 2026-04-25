@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: "Indie Flower", cursive;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 14px;
+        }
+        body {
+            background-color: rgba(255, 210, 215);
+        }
+        @keyframes roll { 
+                  100% {
+                    background-position-y: 200000px;
+                  }
+        }
+        .carta {
+            position: absolute;
+            width: 350px;
+            height: 250px;
+            display: flex;
+            top: 50%;
+            left: 50%;
+            box-shadow: 0 0 20px rgb(100, 45, 52);
+            padding: 0;
+            transform: translate(-50%, -50%);
+        }
+        .bgh {
+            min-width: 100vw;
+            height: 100vh;
+            background-image: url('https://www.onlygfx.com/wp-content/uploads/2019/06/6-heart-pattern-2.png');
+            animation: roll 3000s infinite linear;
+            background-size: contain;
+            opacity: 10%;
+        }
+        .folhaTopo {
+            translate: 0 -225px;
+            transition: translate 1s;
+        }
+        .tampaAbrir {
+            transform: rotateX(180deg);
+            transform-origin: center top;
+        }
+    </style>
+</head>
+<body>
+    <div class="bgh"></div>
+    <div class="carta">
+        
+        <div class="fundo" style="position: absolute;">
+            <svg height="250" width="350" xmlns="http://www.w3.org/2000/svg">
+                <path d="m 0 0 l 350 0 l 0 250 l -350 0 z "
+                style="fill:rgb(255, 128, 126);" />
+            </svg>
+        </div>
+        <div class="folha" id="folha" style="position: relative; margin: 5px;">
+            <p style="position: absolute; width: 98%; padding: 10px; text-align: justify;">Eu não precisei de muito tempo para saber que queria você por perto. Você é o meu melhor "bom dia" e o meu pensamento mais bonito antes de dormir. Obrigado por ser a única pessoa que entende minhas piadas ruins e por ainda me escolher, mesmo sabendo todos os meus defeitos. Te amo mais do que toda coquinha do mundo tá. <br><br><br><br>Com amor Dudu <i class="fa fa-heart"></i></p>
+            <svg height="250" width="350" xmlns="http://www.w3.org/2000/svg">]
+                <path d="m 0 0 l 340 0 l 0 240 l -340 0 z "
+                style="fill:white" />
+            </svg>
+        </div>
+        <div class="meio" id="meio" style="position: absolute;background: none; margin-top: 250px; transform-origin: center top; scale: -1;">
+            <svg height="235" width="350" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 0 250 L 0 0 L 350 0 V 250 L 175 100 Z"
+                style="fill:rgba(255, 151, 162);" />
+            </svg>
+        </div>
+        <div class="frente" id="frente" style="position: absolute;margin-top: 250px; transform-origin: center top; scale: -1;">
+            <svg height="175" width="350" xmlns="http://www.w3.org/2000/svg">
+                <path d="m 0 0 l 350 0 l -175 150 z"
+                style="fill:rgb(239, 137, 147);" />
+            </svg>
+        </div>
+        <div class="tampa" id="tampa" style="position: absolute;">
+            <svg height="250" width="350" xmlns="http://www.w3.org/2000/svg">
+                <path d="m 0 15 L 0 0 l 350 0 L 350 15 l -175 150 z"
+                style="fill:rgba(228, 116, 115);" />
+            </svg>
+        </div>
+        
+    </div>
+</body>
+
+<script>
+    const tampa = document.getElementById('tampa')
+    const folha = document.getElementById('folha')
+    const frente = document.getElementById('frente')
+    const meio = document.getElementById('meio')
+
+    tampa.addEventListener('mousedown', () => {
+        tampa.classList.add('tampaAbrir')
+        tampa.style.transition = "transform 1s"
+    })
+    /*
+        tampa.style.transform = "rotateX(180deg)"
+        tampa.style.transformOrigin = "center top"
+        tampa.style.transition = "transform 1s"
+        folha.classList.toggle('folhaTopo')
+        folha.style.zIndex = "1"
+        folha.style.transition = "translate 1s"
+    */
+
+    folha.addEventListener('mousedown', () => {
+
+            folha.classList.toggle('folhaTopo')
+            folha.style.zIndex = "1"
+            folha.style.transition = "translate 1s"
+            frente.style.zIndex = "200"
+            meio.style.zIndex = "200"
+    })
+</script>
+
+
+</html>
