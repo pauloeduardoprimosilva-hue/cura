@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+        *{
+            font-family: "Indie Flower", cursive;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 40px;
+        }
+        .bonecos {
+            display: flex;
+            width: 460px;
+            height: 300px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transform-origin: center center;
+            transition: transform 1s ease;
+        }
+        .coracao {
+        position: fixed;
+        font-size: 30px;
+        pointer-events: none;
+        animation: subirDesaparecer 2s ease-out forwards;
+        }
+
+        @keyframes subirDesaparecer {
+        0% {
+            opacity: 1;
+            transform: rotate(var(--rot)) scale(var(--scale)) translateY(0);
+        }
+        100% {
+            opacity: 0;
+            transform: rotate(var(--rot)) scale(calc(var(--scale) * 1.5)) translateY(-100px);
+        }
+        }
+        @keyframes squish {
+            0% {transform: scaleX(0.5)}
+        }
+        .bonecos img {
+            position: absolute;
+        }
+
+        .visivel {
+            opacity: 1;
+        }
+        .inv {
+            opacity: 0;
+        }
+
+        .bonecos img {
+            transition: transform 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="font-weight: 900; font-size: 60px; text-align: center;">Contador de beijinhos da Jenny</h1>
+    <p id="kisses" style="text-align: center;">Beijinhos: 0</p>
+    <div onclick="kiss()"  id="bonecos" class="bonecos">
+        <img class="inv" src="Ativo 1.png" alt="" id="a1">
+        <img src="Ativo 2.png" alt="" id="a2">
+    </div>
+</body>
+
+<script>
+    let counter = 0;
+    const bonecos = document.getElementById('bonecos')
+    const a1 = document.getElementById('a1');
+    const a2 = document.getElementById('a2');
+    const kisses = document.getElementById('kisses'); 
+
+
+    function kiss() {
+        counter++;
+        a1.style.transform = "scaleY(1.2)"
+        bonecos.style.transformOrigin = "center"
+        a1.classList.remove('inv');
+        a2.classList.add('inv');
+        kisses.innerHTML = 'Beijinhos:' + counter;
+
+
+        setTimeout(() => {
+            a1.style.transform = "scaleY(1)"
+            a2.classList.remove('inv');
+            a1.classList.add('inv')
+        }, 150);
+
+            
+        const coracao = document.createElement("div");
+        coracao.classList.add("coracao");
+        coracao.innerText = "❤️";
+
+        // posição aleatória na tela
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+
+        const angulo = Math.random() * 120 - 60;
+
+        coracao.style.setProperty("--rot", angulo + "deg");
+        coracao.style.left = `${x}px`;
+        coracao.style.top = `${y}px`;
+
+        // tamanho aleatório (escala)
+        const tamanho = Math.random() * 1 + 1; // de 0.5 até 1.5
+        coracao.style.setProperty("--scale", tamanho);
+
+        document.body.appendChild(coracao);
+
+        // remover depois da animação
+        setTimeout(() => {
+            coracao.remove();
+        }, 2000);
+    }
+</script>
+</html>
