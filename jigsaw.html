@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quebra-cabeça ❤️</title>
+
+<script src="https://flbulgarelli.github.io/headbreaker/js/headbreaker.js"></script>
+
+<style>
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:'Segoe UI', sans-serif;
+    background:
+        linear-gradient(
+            rgba(0,0,0,.65),
+            rgba(0,0,0,.65)
+        ),
+        url("https://i.pinimg.com/originals/be/87/21/be8721a288ad6f32ed237b9cf909dd00.jpg");
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    overflow:hidden;
+}
+
+h1{
+    color:#ff4b72;
+}
+
+#puzzle{
+    position: relative;
+    background:
+        rgba(0, 0, 0, 0.2);
+    border-radius:10px;
+    border: 2px solid rgb(78, 105, 78);
+    box-shadow:
+        0 20px 40px rgba(0,0,0,.20);
+}
+
+#puzzle::before {
+    content: "";
+    filter: grayscale();
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.12;
+    pointer-events: none;
+}
+
+.game-container{
+    width:1200px;
+    max-width:95vw;
+    margin:auto;
+    padding-top:40px;
+    image-orientation: from-image;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    gap:50px;
+}
+
+.polaroid{
+    background:white;
+    padding:12px 12px 30px 12px;
+    width:260px;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+    transform:rotate(2deg);
+    border-radius:3px;
+}
+
+.polaroid img{
+    image-orientation: from-image;
+    width:100%;
+    display:block;
+}
+
+.title{
+    text-align:center;
+    color:white;
+    font-size:42px;
+    margin-top:20px;
+    text-shadow: 0 3px 10px rgba(0,0,0,.35);
+}
+.polaroid p{
+    margin-top:15px;
+    text-align:center;
+    font-family:
+        'Caveat',
+        cursive;
+    font-size:22px;
+    color:#444;
+}
+
+#victory{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(255,238,242,.95);
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:999;
+}
+
+#victory h2{
+    color:#ff4b72;
+    font-size:3rem;
+}
+</style>
+</head>
+<body>
+
+<h1 class="title">
+    Que tal montar-mos o que vivemos até aqui ❤️
+</h1>
+<div class="game-container">
+    <div id="puzzle"></div>
+    <div class="sidebar">
+        <div class="polaroid">
+            <img src="foto.jpg">
+            <p>
+                Nosso caminho juntos foi cheio de desafios, mas aos poucos nós montamos nossa história.❤️
+            </p>
+        </div>
+    </div>
+</div>
+
+<div id="victory">
+    <h2>Você conseguiu! 💖</h2>
+</div>
+
+<script>
+let foto = new Image();
+foto.src = "foto.jpg";
+
+foto.onload = () => {
+    const puzzleWidth = 710;
+    const puzzleHeight = 510; // Tamanho do canvas na tela
+
+    // O tamanho REAL da imagem montada (12 peças de 60px = 720 / 8 peças de 60px = 480)
+    const gridWidth = 710;
+    const gridHeight = 510; 
+
+    // --- CORREÇÃO DO COVER PARA O TAMANHO EXATO DAS PEÇAS ---
+    const canvasCorrigido = document.createElement('canvas');
+    canvasCorrigido.width = gridWidth;
+    canvasCorrigido.height = gridHeight;
+    const ctx = canvasCorrigido.getContext('2d');
+
+    const ratioOriginal = foto.width / foto.height;
+    const ratioPuzzle = gridWidth / gridHeight;
+
+    let drawWidth, drawHeight, startX, startY;
+
+    if (ratioOriginal > ratioPuzzle) {
+        drawHeight = gridHeight;
+        drawWidth = foto.width * (gridHeight / foto.height);
+        startX = (gridWidth - drawWidth) / 2;
+        startY = 0;
+    } else {
+        drawWidth = gridWidth;
+        drawHeight = foto.height * (gridWidth / foto.width);
+        startX = 0;
+        startY = (gridHeight - drawHeight) / 2;
+    }
+
+    ctx.drawImage(foto, startX, startY, drawWidth, drawHeight);
+    // ---------------------------------------------------------
+
+    const puzzle = new headbreaker.Canvas("puzzle", {
+        width: puzzleWidth,
+        height: puzzleHeight,
+        pieceSize: 60,
+        proximity: 10,
+        borderFill: 10,
+        strokeWidth: 1,
+        
+        image: canvasCorrigido, // Passamos a foto com o tamanho perfeito das peças
+
+        lineSoftness: 0.18,
+        connectorSize: 0.25,
+        outline: new headbreaker.outline.Rounded(),
+        preventOffstageDrag: true,
+        fixed: true,
+    });
+
+    // A LINHA MÁGICA QUE VOLTOU! Isso impede a foto de repetir (tiling)
+    puzzle.adjustImagesToPuzzleWidth();
+
+    puzzle.autogenerate({
+        horizontalPiecesCount: 12,
+        verticalPiecesCount: 8
+    });
+
+    // 🌟 O SEGREDO ESTÁ AQUI 🌟
+    // 1. Primeiro desenhamos o quebra-cabeça montado invisivelmente.
+    // Isso força a biblioteca a "gravar" qual pedaço da foto pertence a qual peça.
+    puzzle.draw();
+
+    // 2. Agora sim, podemos embaralhar! Como a foto já foi mapeada, ela não vai quebrar.
+    puzzle.shuffle(0.7);
+
+    // 3. Desenhamos de novo, agora com as peças espalhadas na tela.
+    puzzle.draw();
+    
+    puzzle.drawOutline({
+        stroke: "#d0d0d0",
+        lineWidth: 1
+    });
+
+    puzzle.attachConnectionRequirement();
+
+    puzzle.onConnect(()=>{
+        puzzle.redraw();
+    });
+
+    puzzle.onValid(()=>{
+        document.getElementById("victory").style.display="flex";
+        createHearts();
+    });
+};
+
+function createHearts(){
+    for(let i=0;i<100;i++){
+        const heart=document.createElement("div");
+        heart.innerHTML="💖";
+        heart.style.position="fixed";
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.top="-30px";
+        heart.style.fontSize=(20+Math.random()*25)+"px";
+        document.body.appendChild(heart);
+
+        heart.animate(
+        [
+            {transform:'translateY(0)'},
+            {transform:'translateY(120vh)'}
+        ],
+        {
+            duration:3000+Math.random()*4000
+        });
+
+        setTimeout(()=>heart.remove(),7000);
+    }
+}
+</script>
+
+</body>
+</html>
