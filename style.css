@@ -78,7 +78,7 @@ body {
 }
 
 .mystery-box.revealed {
-    max-height: 400px; /* Altura suficiente para a sua carta inteira */
+    max-height: 600px; /* Altura suficiente para a sua carta inteira */
     cursor: default;
 }
 
